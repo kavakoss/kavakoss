@@ -1,0 +1,55 @@
+[[main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+    weight = 1
+
+[[main]]
+    identifier = "about"
+    name = "About me"
+    url = "/about"
+    weight = 2
+
+[[main]]
+    identifier = "post"
+    name = "Posts"
+    url = "/posts"
+    weight = 3
+
+[[main]]
+    identifier = "categories"
+    name = "Categories"
+    url = "/categories"
+    weight = 4
+
+[[main]]
+    identifier = "tags"
+    name = "Tags"
+    url = "/tags"
+    weight = 5
+
+[[main]]
+    identifier = "contact"
+    name = "Contact"
+    url = "/contact"
+    weight = 6
+    
+# Social Media Configuration
+
+[[social]]
+    identifier = "twitter"
+    name = "Twitter"
+    url = "https://x.com/kavakoss/"
+    weight = 1
+
+[[social]]
+    identifier = "linkedin"
+    name = "LinkedIn"
+    url = "https://www.linkedin.com/in/jasontanuwidjaja/"
+    weight = 2
+
+[[social]]
+    identifier = "github"
+    name = "GitHub"
+    url = "https://github.com/kavakoss/"
+    weight = 3

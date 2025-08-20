@@ -1,0 +1,28 @@
+<footer class="pt-5 pb-10 grid gap-3 sm:grid-cols-2">
+    {{ partial "footer/copyright" . }}
+    {{ partial "footer/social" . }}
+</footer>
+
+<!-- medium-zoom library -->
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js" defer></script>
+
+<!-- init: only bind to images you mark -->
+<script>
+(function () {
+  function initZoom() {
+    if (!window.mediumZoom) return;
+    const targets = document.querySelectorAll('img[data-zoomable]');
+    if (!targets.length) return;
+    // avoid double-binding on bfcache/nav
+    if (window.__zoom) window.__zoom.detach();
+    window.__zoom = mediumZoom(targets, {
+      margin: 20,
+      background: '#000',
+      scrollOffset: 40
+    });
+    console.log('[zoom] bound images:', targets.length);
+  }
+  document.addEventListener('DOMContentLoaded', initZoom);
+  window.addEventListener('pageshow', initZoom);
+})();
+</script>

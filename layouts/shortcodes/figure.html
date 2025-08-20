@@ -1,0 +1,36 @@
+{{- $src := .Get "src" -}}
+{{- $link := .Get "link" -}}
+{{- $title := .Get "title" -}}
+{{- $caption := .Get "caption" -}}
+{{- $alt := or (.Get "alt") $caption "" -}}
+{{- $class := .Get "class" -}}
+{{- $width := .Get "width" -}}
+{{- $height := .Get "height" -}}
+{{- $attr := .Get "attr" -}}
+{{- $attrlink := .Get "attrlink" -}}
+{{- $zoom := eq (lower (default "" (.Get "zoom"))) "true" -}}
+
+<figure{{ with $class }} class="{{ . }}"{{ end }}>
+  {{- if $link }}<a href="{{ $link }}">{{ end -}}
+  <img
+    src="{{ $src }}"
+    alt="{{ $alt }}"
+    {{ with $title }}title="{{ . }}"{{ end }}
+    {{ with $width }}width="{{ . }}"{{ end }}
+    {{ with $height }}height="{{ . }}"{{ end }}
+    {{ if $zoom }}data-zoomable="1"{{ end }}
+    loading="lazy"
+  >
+  {{- if $link }}</a>{{ end -}}
+
+  {{- if or $caption $attr -}}
+  <figcaption>
+    {{- with $caption }}{{ . | markdownify }}{{ end -}}
+    {{- with $attr -}}
+      {{- if $attrlink -}} · <a href="{{ $attrlink }}">{{ . }}</a>
+      {{- else -}} · {{ . }}
+      {{- end -}}
+    {{- end -}}
+  </figcaption>
+  {{- end -}}
+</figure>
