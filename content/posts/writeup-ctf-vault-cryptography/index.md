@@ -13,12 +13,12 @@ tags:
 
 Link Website: https://ctfvault.my.id/challenges
 
-{{< figure src="meme_1.png" width="400" zoom="true" >}}
+{{< figure src="meme_1.png" width="400" zoom="true" zoom="true">}}
 
 ---
 
 ## Baby AES
-{{< figure src="baes_1.png" width="400">}}
+{{< figure src="baes_1.png" width="400" zoom="true">}}
 
 I was given three files: `baby_aes.py`, `baby_aes_output.txt`, and `strongpasswords.txt`
 
@@ -85,7 +85,7 @@ plaintext = PETIR{saya_sudah_install_pycryptodome_dan_bisa_AES_yeyeyeyeyeye}
 ---
 
 ## Baby ECC
-{{< figure src="becc_1.png" width="400">}}
+{{< figure src="becc_1.png" width="400" zoom="true">}}
 I was given `baby_ecc.py`, a service that generates a random elliptic curve over a 512-bit prime field. 
 
 It then picks a random point `G` and asks: `what is the y coordinate if x = G[0]`
@@ -269,11 +269,11 @@ Here's the flag: PETIR{saya_sudah_mengerti_ECC_Yeyyye}
 ---
 
 ## Baby Classical
-{{< figure src="bc_1.png" width="250">}}
+{{< figure src="bc_1.png" width="250" zoom="true">}}
 
 I was given a note that the first password is the Vigenère decryption of `KmzmetvxTvhkhw` with key `PETIR` (which decodes to `VigenereLesgoo`). Then there’s a second ciphertext and a hint that the key is 5 letters.
 
-{{< figure src="bc_2.png" width="250">}}
+{{< figure src="bc_2.png" width="250" zoom="true">}}
 
 
 Using key `PETIR` in CyberChef (Vigenère Decode) gives the plaintext:
@@ -293,17 +293,293 @@ At first, I just guessed the key because the ciphertext started with `ASENG{`. I
 But there’s also a systematic way to solve it. A quick way to find the 5‑letter key without bruteforce is to use the known flag prefix `PETIR{`.
 Take the first 5 ciphertext letters `PWXVX` and align with known plaintext `PETIR` to recover the key by `key[i] = (cipher[i] − plain[i]) mod 26` → this yields the key `ASENG`.
 
-{{< figure src="bc_3.png" width="400">}}
+{{< figure src="bc_3.png" width="400" zoom="true">}}
 
 Using key `ASENG` in CyberChef (Vigenère Decode) gives the plaintext:
-{{< figure src="bc_4.png" width="400">}}
+{{< figure src="bc_4.png" width="400" zoom="true">}}
 
 **Flag: PETIR{saya_bisa_classical_cipher_8ae7bf}**
 
 ---
 
+## Baby RSA
+{{< figure src="brsa_1.png" width="250" zoom="true">}}
+
+I was given `baby_rsa.py` and `baby_rsa_output.txt`. The script prints `n, e, c` and an extra value `p - q`.
+
+```python
+# baby_rsa.py (core)
+p = getPrime(1024)
+q = getPrime(1024)
+n = p * q
+e = 65537
+c = pow(m, e, n)
+print(f"BONUS: p - q = {p - q}")
+```
+
+With `n = p·q` and `k = p − q`, we can recover the primes by solving a quadratic. Note that
+
+```text
+(p − q)^2 + 4pq = (p + q)^2  ⇒  k^2 + 4n = (p + q)^2
+```
+
+Let `s = sqrt(k^2 + 4n) = p + q`. Then
+
+```text
+p = (k + s) / 2
+q = (s − k) / 2  (or q = p − k)
+```
+
+After factoring, compute `φ = (p−1)(q−1)`, `d = e^{-1} mod φ`, and decrypt `m = c^d mod n`.
+
+```python
+from Crypto.Util.number import bytes_to_long, long_to_bytes, inverse
+import math
+
+n = 14923873875109453127530673629552398972113857236927092965349378373739961796973217854411238048020657762893628870965487194767200476309931907607945075544279086782037257684303674574550284796779125454392656397651201679548115630973563249188636298533931515650571979075943709916119469204758259790227752851684077848622139115294011200988154875710930562745414422186967216785732157716088124213507225796166041599019951558479572071316728818921759653083122443549898010713320137090418897626169132769551228143237034394049027488653632942097757185094091514395521313419379878558449573567525441330154259240303681496948369555127420592946511
+e = 65537
+c = 9984341133350650078651603294087617832907031483531600845691188046561487793666207579786522068155426311703637153456725407498837797892324758928973687141590925466823278560885505757942047908833084279891896264160969027891341554101862313924890576880194348254456936173852798724640463810941788644048286779529455119916995669127583805564136112597168025834967759270749756533264965485516185825147694396041528237537028308968214851735948927725586875898195516597896048267563606609322835333057301978107717032346341504928400422866352524344842620334201766305680288380732714315923939846305412470146900439559259225819920093863070853458678
+k = -19759470623835188613903910789493019028845084525246246197933467156297876127263769455636963970894797427707752462720600183791448324660124438010361609272101645200863244217862009495605992204797835421926797789664419752432768718116439739408991394968856238154386724848662811668109830614048640210302409168963181280834
+
+delta = k**2 + 4*n
+sqrt_delta = int(math.isqrt(delta))
+
+q = (-k + sqrt_delta) // 2
+p = q + k
+
+phi = (p - 1) * (q - 1)
+
+d = inverse(e, phi)
+m = pow(c, d, n)
+
+flag = long_to_bytes(m)
+
+print(f"p: {p}")
+print(f"q: {q}")
+print(f"phi: {phi}")
+print(f"d: {d}")
+print(f"Flag: {flag.decode('utf-8')}")
+```
+
+```bash
+p: 112682424610886493700490302450129010966902457975022273954114165585603727082105939159642508549043207301589616792251326534992866331162712984858501944156343118648229464673347830670637009917217182754184570444269629431399984395655344232049516722918165797196634998621951529199849965906921405223902458428617884912563
+q: 132441895234721682314394213239622029995747542500268520152047632741901603209369708615279472519938004729297369254971926718784314655822837422868863553428444763849092708891209840166243002122015018176111368233934049183832753113771783971458508117887022035351021723470614340867959796520970045434204867597581066193397
+phi: 14923873875109453127530673629552398972113857236927092965349378373739961796973217854411238048020657762893628870965487194767200476309931907607945075544279086782037257684303674574550284796779125454392656397651201679548115630973563249188636298533931515650571979075943709916119469204758259790227752851684077848621893990974165592812139991195240811704451772186491925991625995917760618883215750148391119617950970346448685085269505565667982472096136893142170645215735349207921575452604575098714348131197802193118731549975429263482524447584664386192013288578574690725901916845432875460086449477875790046290262229101221641840552
+d: 3147045744449893071432532913627632540314837527111897474420989809193070662895309073469388434375169603173626363683766926036936548554301523767365014328119031681763811300442143867132840012382127863339892143606506358413643560432345760467933436772188741417686265023262310924222516508380901632679975348433311806581848039355829050653276388579248791030341997522274721412397138465041911484597123259391874408655910557210748552396731112463669648662108608316291534810587340373429912457924458364957692466441149675891494423312944327957161418215970548196799115738527888457389939893554516362640870527858208621690517173599323787940193
+Flag: PETIR{saya_bisa_RSA_dan_aljabar_yeyeyyyy}
+```
+
+**Flag: PETIR{saya_bisa_RSA_dan_aljabar_yeyeyyyy}**
+
+---
+
+## Baby Coppersmith
+{{< figure src="bcop_1.png" width="250" zoom="true">}}
+
+At first I thought this was about Coppersmith (since the name suggests it). But when I noticed the extra `BONUS` ciphertext, it clicked that the problem was actually easier, it was just a case of the Franklin–Reiter Related Message Attack.
+
+I was given:
+
+* `c = m^3 mod n`
+* `BONUS = (2m+1)^3 mod n`
+
+Both are encryptions of linearly related messages under the same modulus and exponent. That’s exactly the Franklin–Reiter scenario:
+
+* Message 1: `m`
+* Message 2: `2m+1`
+* Same public key `(n, e)` with `e = 3`
+
+I considered the two polynomials modulo `n`:
+
+* `f(x) = x^3 - c`
+* `g(x) = (2x+1)^3 - BONUS`
+
+Since both vanish at `x = m`, they share the root. Instead of computing a full GCD (difficult in ℤ/nℤ), I eliminated the cubic terms by taking a linear combination:
+
+```
+(16x + 16)·f(x) + (-2x + 1)·g(x) = A·x + B
+```
+
+Where:
+
+* `A = -16c + 2·BONUS + 4`
+* `B = -16c + 1 - BONUS`
+
+Because `m` is a common root:
+
+```
+A·m + B ≡ 0 (mod n)
+```
+
+So:
+
+```
+m ≡ (16c - 1 + BONUS) * (2·BONUS + 4 - 16c)^(-1) mod n
+```
+
+This gives me `m` directly, unless the denominator shares a factor with `n` (in which case, I could factor `n` and decrypt normally).
+
+```python
+from sage.all import *
+import sys, re
+
+def parse_io():
+    txt = open('baby_coppersmith_output.txt','r').read()
+    vals = {}
+    for line in txt.splitlines():
+        m = re.match(r'\s*(n|e|c|BONUS)\s*=\s*([0-9]+)', line)
+        if m:
+            vals[m.group(1)] = Integer(m.group(2))
+    return vals["n"], vals["e"], vals["c"], vals["BONUS"]
+
+def to_bytes(i):
+    i = Integer(i)
+    ln = (i.nbits() + 7)//8
+    return i.to_bytes(ln, 'big')
+
+def solve():
+    n, e, c, bonus = parse_io()
+    Zn = Integers(n)
+    den = Zn(2*bonus + 4 - 16*c)
+    num = Zn(16*c - 1 + bonus)
+
+    g = gcd(Integer(den), n)
+    if 1 < g < n:
+        p = g; q = n // g
+        phi = (p-1)*(q-1)
+        d = inverse_mod(e, phi)
+        m = power_mod(c, d, n)
+    else:
+        m = Integer((num * den.inverse()).lift())
+
+    pt = to_bytes(m)
+    try:
+        print(pt.decode())
+    except:
+        sys.stdout.buffer.write(pt + b"\n")
+
+solve()
+```
+
+```bash
+$ sage solve.sage
+PETIR{saya_sudah_install_sagemath_dan_juga_sudah_mengerti_basic_coppersmith_theorem_yeyeeyeyyyeyeyeyeyeyeyeyyeyeyeyeyeyyeyeyeyey}
+```
+
+**Flag: PETIR{saya_sudah_install_sagemath_dan_juga_sudah_mengerti_basic_coppersmith
+_theorem_yeyeeyeyyyeyeyeyeyeyeyeyyeyeyeyeyeyyeyeyeyey}**
+
+---
+
+## Baby LLL
+{{< figure src="lll_1.png" width="250" zoom="true">}}
+
+When I saw the challenge, the description said it was about LLL. 
+
+LLL stands for **Lenstra–Lenstra–Lovász** lattice basis reduction. In CTFs, I usually use it when:
+* I need to recover small unknown integers from a large linear relation.
+* I want to find short vectors that reveal some hidden structure.
+
+Here the problem gave me:
+* Ten large primes `b[i]` (≈256‑bit).
+* Ten small primes `a[i]` (16‑bit) hidden.
+* A single equation: `S = Σ a[i]*b[i]`.
+* AES key = md5(∏ a\[i]).
+
+This is the classic **small‑coefficient linear combination** case. LLL can recover the `a[i]`.
+
+I built a lattice of dimension 11:
+* For each `i` from 0 to 9, I created a row with a large scaling factor `M` on the diagonal and `b[i]` in the last column.
+* I added one more row with all zeros except the last entry `S`.
+
+So the lattice looks like:
+
+```
+[M      0   ...   0   b1]
+[0      M   ...   0   b2]
+[...                ...]
+[0      0   ...   M   b10]
+[0      0   ...   0    S ]
+```
+
+If I take the integer combination `Σ a[i]*(row_i) − 1*(last_row)`, I get:
+
+```
+(M*a1, M*a2, …, M*a10,  Σ a[i]b[i] − S ) = (M*a1, …, M*a10, 0)
+```
+
+This is a very short vector compared to random ones, so LLL should find it.
+
+```python
+from sage.all import *
+import ast, re, sys
+from hashlib import md5
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+
+def parse():
+    txt = open('baby_LLL_output.txt','r').read()
+    b = ast.literal_eval(re.search(r"b\\s*=\\s*(\\[.*\\])", txt).group(1))
+    S = Integer(re.search(r"S\\s*=\\s*([0-9]+)", txt).group(1))
+    ct_hex = re.search(r"ct\\s*=\\s*([0-9a-fA-F]+)", txt).group(1)
+    ct = bytes.fromhex(ct_hex)
+    return [Integer(x) for x in b], S, ct
+
+def recover_a(b, S, M=2**24):
+    n = len(b)
+    rows = []
+    for i in range(n):
+        row = [0]*n + [int(b[i])]
+        row[i] = int(M)
+        rows.append(row)
+    rows.append([0]*n + [int(S)])
+    L = Matrix(ZZ, rows)
+    B = L.LLL()
+
+    cands = []
+    for r in B.rows():
+        if r[-1] == 0:
+            v = r[:n]
+            if all(v[i] % int(M) == 0 for i in range(n)):
+                a = vector([v[i]//int(M) for i in range(n)])
+                if sum(1 for x in a if x < 0) > n//2:
+                    a = -a
+                cands.append(a)
+
+    for a in cands:
+        if sum(int(a[i])*int(b[i]) for i in range(n)) == int(S):
+            return [int(abs(x)) for x in a]
+
+    raise ValueError("No valid vector found; try larger M")
+
+def solve():
+    b, S, ct = parse()
+    a = recover_a(b, S, M=2**24)
+    x = Integer(1)
+    for ai in a:
+        x *= ai
+    key = md5(int(x).to_bytes((x.nbits()+7)//8, 'big')).digest()
+    pt = unpad(AES.new(key, AES.MODE_ECB).decrypt(ct), 16)
+
+    print("a =", a)
+    print("flag =", pt.decode(errors='ignore'))
+
+solve()
+```
+
+```bash
+$ sage solve.sage
+a = [64717, 59791, 40763, 61553, 52433, 53269, 52181, 35521, 46261, 50503]
+flag = PETIR{saya_sudah_mengerti_LLL_dan_surely_kali_ini_saya_sudah_install_sage_yey}
+```
+
+**Flag: PETIR{saya_sudah_mengerti_LLL_dan_surely_kali_ini_saya_sudah_install_sage_yey}**
+
+---
+
+
 ## babyPRNG
-{{< figure src="bprng_1.png" width="400">}}
+{{< figure src="bprng_1.png" width="400" zoom="true">}}
 
 I was given `babyPRNG.py`. The program uses Python’s `random.getrandbits(128)` each round, then subtracts `i²` where `i` is the round counter.
 
@@ -395,10 +671,10 @@ Nais! ini flagnya: b'PETIR{Random_kek_gini_bisa_dibreak_tau}'
 ---
 
 ## Rogue Transmission
-{{< figure src="rogue_transmission.png" width="250">}}
+{{< figure src="rogue_transmission.png" width="250" zoom="true">}}
 I received two files: `employee-profile-picture.jpg` and `intercepted-enc.txt`
 
-{{< figure src="employee-profile-picture.jpg" width="200">}}
+{{< figure src="employee-profile-picture.jpg" width="200" zoom="true">}}
 
 ```plain
 Intercepted Communication Log
@@ -414,7 +690,7 @@ Message End
 
 When I reverse-searched the image on Google, it identified the person as Blaise de Vigenère.
 That was the first big hint, this is likely a Vigenère Cipher challenge.
-{{< figure src="search_1.png" width="400">}}
+{{< figure src="search_1.png" width="400" zoom="true">}}
 
 Also, the intercepted message looked Base64 encoded. So the plan was:
 1. Decode from Base64
@@ -461,7 +737,7 @@ I guessed the key might come from the challenge description.
 
 First, I tried "thegrandcryptoheist", it didn’t make sense.
 
-{{< figure src="vig1.png" width="400">}}
+{{< figure src="vig1.png" width="400" zoom="true">}}
 But when I tried just "thegrand", I noticed partial readable output like "v1gener3". That meant I was on the right track.
 
 Eventually, "thegrandheist" fully decrypted the message:
@@ -505,7 +781,7 @@ Trust me. If you get in, ChronoCorp won’t even know they’ve been robbed—un
 
 
 ## 101_-_Cryptography
-{{< figure src="2_1.png" width="250">}}
+{{< figure src="2_1.png" width="250" zoom="true">}}
 
 The challenge provided a single file to download, `chall.txt`:
 ```plain
@@ -525,17 +801,17 @@ RSA is secure because it’s really hard to find `p` and `q` from `n` when the n
 
 To solve this, I used the online tool **dCode.fr** and entered the values of `c`, `e`, and `n` to decrypt the message.
 
-{{< figure src="2_2.png" width="250">}}
+{{< figure src="2_2.png" width="250" zoom="true">}}
 
 The tool automatically factored `n`, calculated the corresponding private key `d`, and then decrypted the ciphertext to reveal the flag.
 
-{{< figure src="2_flag.png" width="250">}}
+{{< figure src="2_flag.png" width="250" zoom="true">}}
 **Flag: TSA{Crypto_101_d5b55ff525198ba6}**
 
 ---
 
 ## External Cache
-{{< figure src="ec_1.png" width="250">}}
+{{< figure src="ec_1.png" width="250" zoom="true">}}
 
 I was given `chall.py`. The program sets up an AES-based service with three options
 ```bash
@@ -658,89 +934,8 @@ You succesfully open the vault...
 ---
 
 
-## Baby Coppersmith
-adada
-
----
-
-## Baby LLL
-adada
-
----
-
-## Baby RSA
-{{< figure src="brsa_1.png" width="250">}}
-
-I was given `baby_rsa.py` and `baby_rsa_output.txt`. The script prints `n, e, c` and an extra value `p - q`.
-
-```python
-# baby_rsa.py (core)
-p = getPrime(1024)
-q = getPrime(1024)
-n = p * q
-e = 65537
-c = pow(m, e, n)
-print(f"BONUS: p - q = {p - q}")
-```
-
-With `n = p·q` and `k = p − q`, we can recover the primes by solving a quadratic. Note that
-
-```text
-(p − q)^2 + 4pq = (p + q)^2  ⇒  k^2 + 4n = (p + q)^2
-```
-
-Let `s = sqrt(k^2 + 4n) = p + q`. Then
-
-```text
-p = (k + s) / 2
-q = (s − k) / 2  (or q = p − k)
-```
-
-After factoring, compute `φ = (p−1)(q−1)`, `d = e^{-1} mod φ`, and decrypt `m = c^d mod n`.
-
-```python
-from Crypto.Util.number import bytes_to_long, long_to_bytes, inverse
-import math
-
-n = 14923873875109453127530673629552398972113857236927092965349378373739961796973217854411238048020657762893628870965487194767200476309931907607945075544279086782037257684303674574550284796779125454392656397651201679548115630973563249188636298533931515650571979075943709916119469204758259790227752851684077848622139115294011200988154875710930562745414422186967216785732157716088124213507225796166041599019951558479572071316728818921759653083122443549898010713320137090418897626169132769551228143237034394049027488653632942097757185094091514395521313419379878558449573567525441330154259240303681496948369555127420592946511
-e = 65537
-c = 9984341133350650078651603294087617832907031483531600845691188046561487793666207579786522068155426311703637153456725407498837797892324758928973687141590925466823278560885505757942047908833084279891896264160969027891341554101862313924890576880194348254456936173852798724640463810941788644048286779529455119916995669127583805564136112597168025834967759270749756533264965485516185825147694396041528237537028308968214851735948927725586875898195516597896048267563606609322835333057301978107717032346341504928400422866352524344842620334201766305680288380732714315923939846305412470146900439559259225819920093863070853458678
-k = -19759470623835188613903910789493019028845084525246246197933467156297876127263769455636963970894797427707752462720600183791448324660124438010361609272101645200863244217862009495605992204797835421926797789664419752432768718116439739408991394968856238154386724848662811668109830614048640210302409168963181280834
-
-delta = k**2 + 4*n
-sqrt_delta = int(math.isqrt(delta))
-
-q = (-k + sqrt_delta) // 2
-p = q + k
-
-phi = (p - 1) * (q - 1)
-
-d = inverse(e, phi)
-m = pow(c, d, n)
-
-flag = long_to_bytes(m)
-
-print(f"p: {p}")
-print(f"q: {q}")
-print(f"phi: {phi}")
-print(f"d: {d}")
-print(f"Flag: {flag.decode('utf-8')}")
-```
-
-```bash
-p: 112682424610886493700490302450129010966902457975022273954114165585603727082105939159642508549043207301589616792251326534992866331162712984858501944156343118648229464673347830670637009917217182754184570444269629431399984395655344232049516722918165797196634998621951529199849965906921405223902458428617884912563
-q: 132441895234721682314394213239622029995747542500268520152047632741901603209369708615279472519938004729297369254971926718784314655822837422868863553428444763849092708891209840166243002122015018176111368233934049183832753113771783971458508117887022035351021723470614340867959796520970045434204867597581066193397
-phi: 14923873875109453127530673629552398972113857236927092965349378373739961796973217854411238048020657762893628870965487194767200476309931907607945075544279086782037257684303674574550284796779125454392656397651201679548115630973563249188636298533931515650571979075943709916119469204758259790227752851684077848621893990974165592812139991195240811704451772186491925991625995917760618883215750148391119617950970346448685085269505565667982472096136893142170645215735349207921575452604575098714348131197802193118731549975429263482524447584664386192013288578574690725901916845432875460086449477875790046290262229101221641840552
-d: 3147045744449893071432532913627632540314837527111897474420989809193070662895309073469388434375169603173626363683766926036936548554301523767365014328119031681763811300442143867132840012382127863339892143606506358413643560432345760467933436772188741417686265023262310924222516508380901632679975348433311806581848039355829050653276388579248791030341997522274721412397138465041911484597123259391874408655910557210748552396731112463669648662108608316291534810587340373429912457924458364957692466441149675891494423312944327957161418215970548196799115738527888457389939893554516362640870527858208621690517173599323787940193
-Flag: PETIR{saya_bisa_RSA_dan_aljabar_yeyeyyyy}
-```
-
-**Flag: PETIR{saya_bisa_RSA_dan_aljabar_yeyeyyyy}**
-
----
-
 ## RSA Odyssey
-{{< figure src="rody_1.png" width="250">}}
+{{< figure src="rody_1.png" width="250" zoom="true">}}
 
 I was given `chal.py` and `output.txt`. The program generates two 256-bit primes `p, q` and prints out `n, e, c, n2, c2`. 
 
@@ -796,7 +991,7 @@ Flag: CSC{s0me_b4sic_r5a_chall_ig_1a9f4560}
 ---
 
 ## Rese Sangad Ah
-{{< figure src="rese_1.png" width="250">}}
+{{< figure src="rese_1.png" width="250" zoom="true">}}
 
 I was given two files: `Rese.py` and `outputrese.txt`. The program splits the flag into 7‑byte chunks, then encrypts each block with RSA using modulus `n = p*q`. 
 
@@ -850,7 +1045,7 @@ Flag: PETIR{Pe_Pe_Pe_ga_dijawab_mulu_kan_rese_sangad_ahhh!!!!}
 ---
 
 ## Pemanasan bang
-{{< figure src="panas_1.png" width="250">}}
+{{< figure src="panas_1.png" width="250" zoom="true">}}
 
 I was given two files: `chall.py` and `encrypted.txt`. The generator (`chall.py`) picks a very small private exponent `d` (only 32-bit prime) and computes `e = inverse(d, φ(n))`
 
@@ -913,7 +1108,7 @@ Plaintext: b'BEBASBTW{good_warm_up_means_good_chall_idk_lol}'
 ---
 
 ## Pendinginan bang
-{{< figure src="dingin_1.png" width="250">}}
+{{< figure src="dingin_1.png" width="250" zoom="true">}}
 
 The challenge server on `nc 194.31.53.241 6969` asks for a name; supplying one that satisfies `bytes_to_long(name) % 2 == 1` (like `yobe`) produces the ciphertext and modulus `(c, N, e)`
 
@@ -1018,7 +1213,7 @@ by the way I ada flag buat YOU ini I kasi YOU BEBAS{kata_y0bel_f0rm4t_fl4gny4_b3
 ---
 
 ## Additive Transformation
-{{< figure src="additive_1.png" width="200">}}
+{{< figure src="additive_1.png" width="200" zoom="true">}}
 
 The provided `chall.py` implements the **Paillier cryptosystem**. 
 
@@ -1090,7 +1285,7 @@ FLAG: PETIR{4dd1t1v3_3ncrYpti0n_crYpt0sYst3Ms_ar3_1nt3rest1ng_paillier1999}
 
 ## Crocodilo Encryptilo
 
-{{< figure src="croc_1.png" width="200">}}
+{{< figure src="croc_1.png" width="200" zoom="true">}}
 yg buat challenge ini gay.
 
 Upon accessing `nc 194.31.53.241 33333`, inspection of `chall.py` makes it clear that:
@@ -1233,7 +1428,7 @@ KonekoCTF{0r4cl3_0r4cl3_0r4cl3_0r4cl3_0r4cl3_oracle+p4d_p4d_p4d_p4d_p4d_p4d_p4d_
 
 ## Shadow Blueprint 
 
-{{< figure src="sb_1.png" width="200">}}
+{{< figure src="sb_1.png" width="200" zoom="true">}}
 
 I was given three files:
 * `drive-guard.py`
@@ -1404,7 +1599,7 @@ mv blueprint.bin blueprint.png
 ```
 
 Opening the image showed a glowing vault blueprint, and at the bottom, the flag:
-{{< figure src="blueprint.png" width="400">}}
+{{< figure src="blueprint.png" width="400" zoom="true">}}
 
 **Flag: PETIR{r3lat1on_1s_4_d1s4ster_ba7ejz12}**
 

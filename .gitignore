@@ -1,4 +1,25 @@
+# Hugo output
+/public/
+/resources/_gen/
+
+# Node
+/node_modules/
+/package-lock.json
+
+# Local env files
 .env
-.env.build
-node_modules
-public
+.env.*
+!.env.example
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Hugo build lock (avoids conflicts)
+.hugo_build.lock
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
