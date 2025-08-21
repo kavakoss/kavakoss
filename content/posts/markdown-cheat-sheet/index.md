@@ -1,12 +1,8 @@
 ---
 title: "Markdown Cheat Sheet"
-draft: false
+draft: true
 date: 2022-08-27T09:16:45.000Z
 description: "Markdown is a powerful tool for creating rich text using a plain text editor. This cheatsheet is a quick reference for Markdown syntax."
-categories:
-  - Hello
-tags:
-  - Ok
 ---
 
 This Markdown cheat sheet **provides** a quick overview of all the Markdown syntax elements. It can’t cover every edge case, so if you need more information about any of these elements, refer to the reference guides for basic _syntax_ and extended syntax.

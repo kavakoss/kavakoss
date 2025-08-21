@@ -19,6 +19,7 @@
     {{ with $width }}width="{{ . }}"{{ end }}
     {{ with $height }}height="{{ . }}"{{ end }}
     {{ if $zoom }}data-zoomable="1"{{ end }}
+    class="rounded-img"
     loading="lazy"
   >
   {{- if $link }}</a>{{ end -}}

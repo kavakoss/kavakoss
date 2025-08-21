@@ -1605,17 +1605,17 @@ Opening the image showed a glowing vault blueprint, and at the bottom, the flag:
 
 ---
 
-## Orthogonal Gridlock
-adada
+## Orthogonal Gridlock (soon)
+masih sedang bertapa mencari pencerahan
 
 ---
 
-## Guess God
-adada
+## Guess God (soon)
+masih sedang bertapa mencari pencerahan
 
 ---
 
-## -\-python
-oke ngab
+## -\-python (soon)
+masih sedang bertapa mencari pencerahan
 
 ---

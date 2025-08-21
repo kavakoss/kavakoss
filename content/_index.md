@@ -2,10 +2,11 @@
 title: "Ahoy There!"
 draft: false
 ---
-Welcome to **Kavakoss**, my space for sharing cybersecurity projects, CTF write-ups, and personal insights.
+Welcome to **Kavakoss** — my little corner of the internet where I share cybersecurity projects, CTF write-ups, and random insights along the way.
 
-I post about cybersecurity concepts, CTF solutions (write-ups), bug bounty findings, and my journey into Web3 development and security.
-This site serves as my portfolio and a journal of what I learn along the way.
+This site serves as both a portfolio and a record of my learning part project showcase, part public notebook.
+
+I hope you find something useful here, or at least interesting!
 
 ```c {lineNos=false}
 #include <stdio.h>

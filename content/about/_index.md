@@ -3,15 +3,14 @@ title: "About Me"
 draft: false
 ---
 
-I’m a 3rd-year undergraduate cybersecurity student at Binus University, passionate about CTF competitions, bug bounty hunting, and exploring Web3 programming and security.
+I’m a 3rd-year cybersecurity student at Binus University who enjoys diving into CTFs, bug bounty hunting, and exploring Web3 development.
 
-My goal is to improve my skills and share what I learn through write-ups and projects.
+Always looking to sharpen my skills and share what I pick up along the way through write-ups and projects.
 
-**Fun fact:** I am fast at typing, this is my 15 secs attempt :)
-![speed](speed.png)
+**Fun fact:** I’m a bit addicted to typing tests 🙈
+{{< figure src="speed.png" width="600" zoom="true">}}
+On monkeytype I once hit ~150 WPM in a short 15s run…
 
-**Record for 1 Minutes**
-- English: 137 WPM @ 94% accuracy  
-- Indonesian: 146 WPM @ 96% accuracy
+A side hobby that keeps my fingers busy when I should probably be doing something else..
 
-{{< figure src="certificate_ceafo.jpeg" width="500" alt="Certificate" >}}
+{{< figure src="tr_1.png" width="300" zoom="true">}}
