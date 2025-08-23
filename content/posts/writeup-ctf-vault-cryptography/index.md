@@ -13,7 +13,10 @@ tags:
 
 Link Website: https://ctfvault.my.id/challenges
 
-{{< figure src="meme_1.png" width="400" zoom="true" zoom="true">}}
+{{< figure src="score_1.png" width="400" zoom="true">}}
+Sedang bertapa untuk menyelesaikan 3 soal terakhir :)
+
+{{< figure src="meme_1.png" width="400" zoom="true">}}
 
 ---
 
