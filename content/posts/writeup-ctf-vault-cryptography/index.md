@@ -18,6 +18,11 @@ Sedang bertapa untuk menyelesaikan 3 soal terakhir :)
 
 {{< figure src="meme_1.png" width="400" zoom="true">}}
 
+This write-up does not go into full detail on every concept. 
+It mainly documents the steps I took to solve the challenge, with quite some help from AI-chan.
+
+In upcoming posts, I’ll cover cryptography topics one by one in more depth.
+
 ---
 
 ## Baby AES
