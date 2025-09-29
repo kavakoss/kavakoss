@@ -15,8 +15,7 @@ int main()
 {
     printf("Hello, Welcome to kavakoss!\n");
 
-    // Hidden text: 626a4e324d334a665a7a4275626a52665a7a46324d3139354d48566664584168
-    // What is it?
+    // Welcome to my Portfolio Website!
     return 0;
 }
 ```
