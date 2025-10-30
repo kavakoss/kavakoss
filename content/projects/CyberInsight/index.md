@@ -5,6 +5,7 @@ description: "A full-stack web platform for cyber security education with admin 
 draft: false
 ---
 
+{{< figure src="layout_cyberinsight.png" width="600" zoom="true">}}
 ## 🎯 Overview
 
 CyberInsight is a comprehensive cyber security education platform designed to provide accessible and engaging content about digital security. The platform features a modern, responsive interface where users can browse articles, bookmark favorites, participate in discussions, and learn about various cybersecurity topics including encryption, network security, social engineering, and more.
@@ -15,18 +16,14 @@ CyberInsight is a comprehensive cyber security education platform designed to pr
 
 ## 👨‍💼 My Role
 
-**Full-Stack Developer & Project Manager**
+**Project Manager & System Integrator**
 
-As the lead developer and project manager, I was responsible for:
-
-- **Project Planning:** Defined project scope, technical requirements, and development roadmap
-- **Architecture Design:** Designed the full-stack architecture using Next.js 14 with App Router pattern
-- **Database Design:** Created MongoDB schema for users, articles, and comments with proper relationships
-- **Authentication System:** Implemented secure JWT-based authentication with bcrypt password hashing
-- **Frontend Development:** Built responsive UI components using React, TypeScript, and Tailwind CSS
-- **Backend Development:** Developed RESTful API endpoints with Next.js API routes
-- **Admin Dashboard:** Created comprehensive admin panel for content management with statistics
-- **Deployment & DevOps:** Set up CI/CD pipeline with GitHub and Vercel for automated deployments
+- Led a team of 4 developers throughout the project lifecycle
+- Defined technical architecture and database schema design
+- Coordinated frontend and backend development integration
+- Conducted code reviews and ensured code quality standards
+- Managed deployment pipeline and CI/CD setup with Vercel
+- Facilitated daily stand-ups and sprint planning sessions
 
 ---
 
@@ -46,100 +43,86 @@ As the lead developer and project manager, I was responsible for:
 - **jsonwebtoken (JWT)** - Stateless authentication
 - **Node.js** - JavaScript runtime
 
-### **Database**
+### **Database & Deployment**
 - **MongoDB Atlas** - Cloud-hosted NoSQL database
-- **Mongoose Schema** - Data validation and relationships
-
-### **Deployment & Tools**
 - **Vercel** - Hosting platform with automatic deployments
 - **GitHub** - Version control and CI/CD integration
-- **MongoDB Compass** - Database management tool
 
 ---
 
-## ✨ Key Features & Contributions
+## ✨ Key Features
 
-### **1. User Authentication System**
-- Implemented secure registration and login with JWT tokens
-- Password hashing using bcrypt with 10 salt rounds
-- Role-based access control (user/admin)
-- Token expiration and refresh mechanism
-- Protected routes with middleware authentication
+### **User Features**
+- Authentication system with JWT-based login/register
+- Browse articles by category with search functionality
+- Bookmark system to save favorite articles
+- Comment system for article discussions
+- Responsive profile management
 
-### **2. Content Management System**
-- **Admin Dashboard** with real-time statistics:
-  - Total articles count
-  - Published vs draft articles
-  - Total views tracking
-  - Category distribution
-- **CRUD Operations** for articles:
-  - Create articles with markdown support
-  - Edit existing content
-  - Delete with confirmation
-  - Publish/unpublish toggle
-- **Rich Text Content:**
-  - Markdown rendering with `react-markdown`
-  - Code syntax highlighting
-  - Responsive images with Next.js Image optimization
+### **Admin Features**
+- Comprehensive admin dashboard with real-time statistics
+- CRUD operations for articles with markdown editor
+- Article management (create, edit, delete, publish/unpublish)
+- Role-based access control
 
-### **3. User Features**
-- **Article Browsing:**
-  - Category filtering (Encryption, Network Security, Social Engineering, etc.)
-  - Search functionality
-  - Responsive grid layout
-- **Bookmark System:**
-  - Save favorite articles
-  - Dedicated bookmarks page
-  - One-click remove bookmarks
-- **Comment System:**
-  - User discussions on articles
-  - Real-time comment display
-  - User profile integration
-- **Profile Management:**
-  - Update name and email
-  - View bookmarks count
-  - Role display
-
-### **4. Responsive Design**
-- Mobile-first approach with Tailwind breakpoints
-- Adaptive layouts for mobile, tablet, and desktop
-- Touch-friendly UI elements
-- Optimized typography and spacing
-
-### **5. Performance Optimization**
-- Server-Side Rendering (SSR) for SEO
-- Static Site Generation (SSG) for fast page loads
-- MongoDB query optimization with lean() and indexes
-- Image optimization with Next.js Image component
-- Code splitting and lazy loading
+### **Technical Features**
+- Server-Side Rendering (SSR) for SEO optimization
+- Mobile-first responsive design with Tailwind breakpoints
+- Secure password hashing with bcrypt
+- Token-based authentication with 7-day expiration
+- MongoDB query optimization with indexing
 
 ---
 
-## 📊 Technical Highlights
+## 🤝 Team Contributions
 
-### **Database Architecture**
-```javascript
-// User Schema
-{
-  name: String,
-  email: String (unique, indexed),
-  password: String (hashed),
-  role: "user" | "admin",
-  bookmarks: [ObjectId] (references articles),
-  createdAt: Date
-}
+### **My Contributions (PM & Integrator):**
+- Designed overall system architecture and database schema
+- Integrated authentication system across frontend and backend
+- Set up MongoDB collections and relationships
+- Implemented API route structure and middleware
+- Coordinated component integration and routing
+- Managed deployment workflow and environment configuration
 
-// Article Schema
-{
-  title: String,
-  slug: String (unique, indexed),
-  content: String (markdown),
-  excerpt: String,
-  category: String,
-  tags: [String],
-  author: String,
-  image: String,
-  views: Number,
-  published: Boolean,
-  createdAt: Date
-}
+### **Frontend Team:**
+- Built responsive UI components with React and Tailwind CSS
+- Implemented article browsing and filtering interfaces
+- Created admin dashboard with statistics visualization
+- Developed markdown rendering with syntax highlighting
+
+### **Backend Team:**
+- Developed RESTful API endpoints for authentication and CRUD
+- Implemented JWT token generation and verification
+- Created Mongoose schemas and database models
+- Built bookmark and comment system APIs
+
+### **UI/UX Designer:**
+- Designed color scheme and branding (cyber security theme)
+- Created responsive layouts and component mockups
+- Ensured accessibility and user experience standards
+
+---
+
+## 📈 Learning & Outcomes
+
+### **Technical Skills**
+- Gained experience in **team coordination** and **project management**
+- Mastered **Next.js 14 App Router** architecture patterns
+- Implemented **secure authentication** with JWT and bcrypt
+- Designed **scalable database schemas** with MongoDB
+- Achieved **production deployment** with zero-downtime CI/CD
+
+### **Soft Skills**
+- Enhanced **leadership** and **communication** abilities
+- Practiced **agile methodology** with sprint planning
+- Improved **code review** and **quality assurance** processes
+- Developed **problem-solving** skills through technical challenges
+
+### **Project Outcomes**
+- ✅ Successfully delivered production-ready platform on schedule
+- ✅ Achieved 100% deployment success with automated CI/CD
+- ✅ Implemented security best practices (JWT, bcrypt, env variables)
+- ✅ Created fully responsive design across all device sizes
+- ✅ Built reusable component library for future projects
+
+---
