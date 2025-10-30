@@ -1,6 +1,6 @@
 ---
 title: "CyberInsight - Cyber Security Education Platform"
-date: 2025-10-30
+date: 2025-10-23
 description: "A full-stack web platform for cyber security education with admin dashboard, authentication system, and content management"
 draft: false
 ---
