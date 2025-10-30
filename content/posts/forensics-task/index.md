@@ -1,7 +1,7 @@
 ---
 title: "Forensics-Task"
 date: 2025-10-27T08:58:37+07:00
-draft: false
+draft: true
 tableOfContents: true
 description: "Ringkasan praktis langkah forensik citra digital di Kali Linux — siap presentasi dan praktik."
 categories:

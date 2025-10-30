@@ -3,9 +3,9 @@ title: "About Me"
 draft: false
 ---
 
-I’m a 3rd-year cybersecurity student at Binus University who enjoys diving into CTFs, bug bounty hunting, and exploring Web3 development.
+Hi, I’m Jason — a Cyber Security enthusiast and CTF player from Bina Nusantara University. I love exploring cryptography, web exploitation, and forensics through competitions and real-world projects.
 
-Always looking to sharpen my skills and share what I pick up along the way through write-ups and projects.
+I enjoy learning, breaking, and rebuilding systems securely & sharing my findings through write-ups, talks, and team collaborations.
 
 **Fun fact:** I’m a bit addicted to typing tests 🙈
 {{< figure src="speed.png" width="600" zoom="true">}}
